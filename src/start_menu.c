@@ -385,6 +385,7 @@ void Task_StartMenuHandleInput(u8 taskId)
     }
 }
 
+// Need our own version of this for dev menu
 void ShowStartMenu(void)
 {
     if (!IsUpdateLinkStateCBActive())

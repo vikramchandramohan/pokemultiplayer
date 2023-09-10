@@ -705,6 +705,7 @@ static void CB2_InitBattleInternal(void)
     if (!(gBattleTypeFlags & BATTLE_TYPE_LINK))
     {
         CreateNPCTrainerParty(&gEnemyParty[0], gTrainerBattleOpponent_A);
+        // Now gTrainers[trainerNum] represents the NPC party and needs to be sent to the webpage
         SetWildMonHeldItem();
     }
 
@@ -1053,6 +1054,7 @@ static void CB2_HandleStartBattle(void)
         }
         break;
     case 15:
+        // Here is where it would pick multiplayer
         InitBattleControllers();
         gBattleCommunication[MULTIUSE_STATE]++;
         gBattleCommunication[SPRITES_INIT_STATE1] = 0;
@@ -3090,6 +3092,7 @@ enum
     STATE_WAIT_SET_BEFORE_ACTION,
 };
 
+// Where the players turn actions are handled
 static void HandleTurnActionSelectionState(void)
 {
     s32 i;

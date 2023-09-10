@@ -20,6 +20,7 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
+#include <sys/socket.h>
 
 static void OpponentHandleGetMonData(void);
 static void OpponentHandleGetRawMonData(void);
@@ -153,6 +154,8 @@ static void (*const sOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
 
 // unknown unused data
 static const u8 sUnused[] = { 0xB0, 0xB0, 0xC8, 0x98, 0x28, 0x28, 0x28, 0x20 };
+
+
 
 static void OpponentDummy(void)
 {
@@ -1356,6 +1359,7 @@ static void OpponentHandleChooseMove(void)
     {
 
         BattleAI_SetupAIData();
+        // This is where we make the switch!!!!!
         chosenMoveId = BattleAI_ChooseMoveOrAction();
 
         switch (chosenMoveId)
