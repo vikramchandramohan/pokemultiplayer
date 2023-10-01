@@ -370,18 +370,23 @@ struct LinkBattlerHeader
     struct BattleEnigmaBerry battleEnigmaBerry;
 };
 
+// I think the ones we need to send to the web page are:
+// battlerPartyIndexes, battlerPartyOrders, focusPunchBattlerId, abilityPreventingSwitchout, gEnemyParty, DisableStruct
+
+// The ones we need to return to the game are:
+// AI_monToSwitchIntoId, AI_itemType, AI_itemFlags
 struct BattleStruct
 {
-    u8 turnEffectsTracker;
+    u8 turnEffectsTracker; // Keeps track of stuff like leech seed, abilities+items that run at the end of the turn
     u8 turnEffectsBattlerId;
     u8 filler2; // unused
     u8 turnCountersTracker;
-    u8 wrappedMove[MAX_BATTLERS_COUNT * 2]; // Leftover from Ruby's ewram access.
-    u8 moveTarget[MAX_BATTLERS_COUNT];
-    u8 expGetterMonId;
+    u8 wrappedMove[MAX_BATTLERS_COUNT * 2]; // Leftover from Ruby's ewram access. // Used for the move Wrap
+    u8 moveTarget[MAX_BATTLERS_COUNT]; // This needs to be collected from the webpage after the move is chosen
+    u8 expGetterMonId; // Not useful for webpage
     u8 field_11; // unused
     u8 wildVictorySong;
-    u8 dynamicMoveType;
+    u8 dynamicMoveType; // Are there moves with types that change? Hidden power ig??
     u8 wrappedBy[MAX_BATTLERS_COUNT];
     u16 assistPossibleMoves[PARTY_SIZE * MAX_MON_MOVES]; // 6 mons, each of them knowing 4 moves
     u8 focusPunchBattlerId;
@@ -394,12 +399,12 @@ struct BattleStruct
     // balign 2
     u16 expValue;
     u8 scriptPartyIdx; // for printing the nickname
-    u8 sentInPokes;
+    u8 sentInPokes; // Not useful for webpage
     bool8 selectionScriptFinished[MAX_BATTLERS_COUNT];
     u8 battlerPartyIndexes[MAX_BATTLERS_COUNT];
     u8 monToSwitchIntoId[MAX_BATTLERS_COUNT];
     u8 battlerPartyOrders[MAX_BATTLERS_COUNT][3];
-    u8 runTries;
+    u8 runTries; // Can't run as a trainer - not useful for webpage
     u8 caughtMonNick[POKEMON_NAME_LENGTH + 1];
     u8 field_78; // unused
     u8 safariRockThrowCounter;
@@ -421,7 +426,7 @@ struct BattleStruct
     u8 expGetterBattlerId;
     u8 field_90; // unused
     u8 absentBattlerFlags;
-    u8 AI_monToSwitchIntoId[2];
+    u8 AI_monToSwitchIntoId[2]; // Size 2 array for double battles - indicates which mon is being replaced
     u8 simulatedInputState[4];  // used by Oak/Old Man/Pokedude controllers
     u8 lastTakenMove[MAX_BATTLERS_COUNT * 2 * 2]; // ask gamefreak why they declared it that way
     u16 hpOnSwitchout[2];

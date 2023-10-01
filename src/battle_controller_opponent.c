@@ -20,7 +20,7 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
-#include <sys/socket.h>
+//#include <sys/socket.h>
 
 static void OpponentHandleGetMonData(void);
 static void OpponentHandleGetRawMonData(void);
