@@ -20,7 +20,10 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/sound.h"
-//#include <sys/socket.h>
+#include "battle_controllers.h"
+//#include <sys/socket.h> /* socket, connect */
+//#include <netinet/in.h> /* struct sockaddr_in, struct sockaddr */
+//#include <netdb.h> /* struct hostent, gethostbyname */
 
 static void OpponentHandleGetMonData(void);
 static void OpponentHandleGetRawMonData(void);
@@ -80,7 +83,7 @@ static void OpponentHandleResetActionMoveSelection(void);
 static void OpponentHandleCmd55(void);
 static void OpponentCmdEnd(void);
 
-static void OpponentBufferRunCommand(void);
+//static void OpponentBufferRunCommand(void);
 static u32 GetOpponentMonData(u8 monId, u8 *dst);
 static void SetOpponentMonData(u8 monId);
 static void DoSwitchOutAnimation(void);
@@ -90,6 +93,8 @@ static void StartSendOutAnim(u8 battlerId, bool8 dontClearSubstituteBit);
 static void Task_StartSendOutAnim(u8 taskId);
 static void SpriteCB_FreeOpponentSprite(struct Sprite *sprite);
 static void EndDrawPartyStatusSummary(void);
+
+// Keep the same functions as battle_controller_opponent for things like animations
 
 static void (*const sOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
 {
@@ -155,33 +160,45 @@ static void (*const sOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
 // unknown unused data
 static const u8 sUnused[] = { 0xB0, 0xB0, 0xC8, 0x98, 0x28, 0x28, 0x28, 0x20 };
 
-
+void SendInfoToWebpage(void)
+{
+    int port = 80;
+    char *host = "";
+    
+}
 
 static void OpponentDummy(void)
 {
 }
 
-void SetControllerToOpponent(void)
+void SetControllerToMultiplayer(void)
 {
-    gBattlerControllerFuncs[gActiveBattler] = OpponentBufferRunCommand;
+    //gBattlerControllerFuncs[gActiveBattler] = GetActionFromOtherPlayer;
 }
 
-static void OpponentBufferRunCommand(void)
-{
-    if (gBattleControllerExecFlags & gBitTable[gActiveBattler])
-    {
-        if (gBattleBufferA[gActiveBattler][0] < NELEMS(sOpponentBufferCommands))
-            sOpponentBufferCommands[gBattleBufferA[gActiveBattler][0]]();
-        else
-            OpponentBufferExecCompleted();
-    }
-}
+
+// Everything below here needs to be deleted/edited
+
+// static void GetActionFromOtherPlayer(void)
+// {
+//     // Send info to webpage
+    
+//     // Receive info from webpage
+//     if (gBattleControllerExecFlags & gBitTable[gActiveBattler])
+//     {
+//         if (gBattleBufferA[gActiveBattler][0] < NELEMS(sOpponentBufferCommands))
+//             sOpponentBufferCommands[gBattleBufferA[gActiveBattler][0]]();
+//         else
+//             OpponentBufferExecCompleted();
+//     }
+// }
 
 static void CompleteOnBattlerSpriteCallbackDummy(void)
 {
     if (gSprites[gBattlerSpriteIds[gActiveBattler]].callback == SpriteCallbackDummy)
         OpponentBufferExecCompleted();
 }
+
 
 static void CompleteOnBattlerSpriteCallbackDummy2(void)
 {
@@ -423,11 +440,11 @@ static void CompleteOnFinishedBattleAnimation(void)
         OpponentBufferExecCompleted();
 }
 
-void OpponentBufferExecCompleted(void)
-{
-    gBattlerControllerFuncs[gActiveBattler] = OpponentBufferRunCommand;
-    gBattleControllerExecFlags &= ~gBitTable[gActiveBattler];
-}
+// void OpponentBufferExecCompleted(void)
+// {
+//     gBattlerControllerFuncs[gActiveBattler] = OpponentBufferRunCommand;
+//     gBattleControllerExecFlags &= ~gBitTable[gActiveBattler];
+// }
 
 static void OpponentHandleGetMonData(void)
 {

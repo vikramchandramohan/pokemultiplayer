@@ -435,7 +435,7 @@ u8 GetMostSuitableMonToSwitchInto(void)
     u8 invalidMons;
     u16 move;
 
-    if (*(gBattleStruct->monToSwitchIntoId + gActiveBattler) != PARTY_SIZE)
+    if (*(gBattleStruct->monToSwitchIntoId + gActiveBattler) != PARTY_SIZE) // If it's PARTY_SIZE (highest id + 1) then there's no better switch option
         return *(gBattleStruct->monToSwitchIntoId + gActiveBattler);
     if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
     {
